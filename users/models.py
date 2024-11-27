@@ -6,7 +6,7 @@ from django.db import models
 
 class Enrollment(models.Model):
     enrolled_at = models.DateField(auto_now_add=True)
-    mark = models.IntegerField(blank=True)
+    mark = models.PositiveSmallIntegerField(blank=True)
     student = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='student'
     )
@@ -20,14 +20,12 @@ class Profile(models.Model):
         TEACHER = 'T', 'Teacher'
         STUDENT = 'S', 'Student'
 
-    user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='user'
-    )
     role = models.CharField(
         max_length=1,
         choices=Role,
         default=Role.STUDENT,
     )
+
     bio = models.TextField(blank=True)
     avatar = models.ImageField(
         blank=True,
@@ -35,3 +33,8 @@ class Profile(models.Model):
         upload_to='avatars',
         default='avatars/noavatar.png',
     )
+
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.role

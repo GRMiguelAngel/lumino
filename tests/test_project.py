@@ -6,6 +6,7 @@ from django.conf import settings
 # ==============================================================================
 
 
+@pytest.mark.django_db
 def test_required_apps_are_installed():
     PROPER_APPS = ('accounts', 'shared', 'users', 'subjects')
 

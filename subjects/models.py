@@ -12,8 +12,13 @@ class Subject(models.Model):
         related_name='students',
     )
     teacher = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='teacher'
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='teacher',
     )
+
+    def __str__(self):
+        return self.code
 
 
 class Lesson(models.Model):
@@ -22,3 +27,6 @@ class Lesson(models.Model):
     subject = models.ForeignKey(
         'subjects.Subject', related_name='subject_lesson', on_delete=models.CASCADE
     )
+
+    def __str__(self):
+        return self.title
