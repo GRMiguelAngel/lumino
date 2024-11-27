@@ -16,20 +16,17 @@ class Enrollment(models.Model):
 
 
 class Profile(models.Model):
-    TEACHER = 'T'
-    STUDENT = 'S'
-    ROLE_CHOICES = {
-        TEACHER: 'Teacher',
-        STUDENT: 'Student',
-    }
+    class Role(models.TextChoices):
+        TEACHER = 'T', 'Teacher'
+        STUDENT = 'S', 'Student'
 
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='user'
     )
     role = models.CharField(
         max_length=1,
-        choices=ROLE_CHOICES,
-        default=STUDENT,
+        choices=Role,
+        default=Role.STUDENT,
     )
     bio = models.TextField(blank=True)
     avatar = models.ImageField(
