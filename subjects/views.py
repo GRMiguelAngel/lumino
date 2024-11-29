@@ -9,5 +9,6 @@ from .models import Subject
 
 @login_required
 def subject_list(request: HttpRequest) -> HttpResponse:
-    subjects = Subject.objects.all()
+    if request.user.profile
+        subjects = Subject.objects.filter(students=request.user)
     return render(request, 'subjects/subject_list.html', dict(subjects=subjects))
