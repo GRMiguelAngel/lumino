@@ -6,7 +6,7 @@
 <div class="text-center ">
   <a href="{% url "logout" %}" class='text-decoration-none'>logout</a>
 </div>
-hola {{user}},
+hola {{user}}, {{user.profile}}
 
 {% for subject in subjects %}
 {{subject.code}}
