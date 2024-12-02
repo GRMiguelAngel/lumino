@@ -31,6 +31,11 @@ LOGIN_URL = '/login/'
 
 STATIC_URL = 'static/'
 
+CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
+
+STATICFILES_DIRS = [BASE_DIR / 'node_modules']
+
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
@@ -47,6 +52,8 @@ INSTALLED_APPS = [
     'shared.apps.SharedConfig',
     'users.apps.UsersConfig',
     'subjects.apps.SubjectsConfig',
+    'crispy_forms',
+    'crispy_bootstrap5',
 ]
 
 MIDDLEWARE = [
