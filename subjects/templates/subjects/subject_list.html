@@ -6,9 +6,12 @@
 <div class="text-center ">
   <a href="{% url "logout" %}" class='text-decoration-none'>logout</a>
 </div>
-hola {{user}}, {{user.profile}}
+<p>hola {{user}}, {{user.profile}}</p>
+<a href="{% url "user:enroll" %}">Matricularse</a>
 
 {% for subject in subjects %}
-{{subject.code}}
+  {{subject.code}}
 {% endfor %}
+
+
 {% endblock body %}

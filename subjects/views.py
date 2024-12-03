@@ -11,3 +11,4 @@ from .models import Subject
 def subject_list(request: HttpRequest) -> HttpResponse:
     subjects = Subject.objects.filter(students=request.user)
     return render(request, 'subjects/subject_list.html', dict(subjects=subjects))
+

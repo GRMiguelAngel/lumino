@@ -19,15 +19,18 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
-import shared.views
 
 import accounts.views
+import shared.views
 
 urlpatterns = [
     path('', shared.views.index, name='index'),
     path('admin/', admin.site.urls),
+    path('home/', shared.views.index),
     path('login/', accounts.views.user_login, name='login'),
     path('signup/', accounts.views.user_signup, name='signup'),
     path('logout/', accounts.views.user_logout, name='logout'),
     path('subjects/', include('subjects.urls')),
+    path('user/', include('users.urls')),
+    path('__reload__/', include('django_browser_reload.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

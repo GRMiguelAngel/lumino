@@ -7,4 +7,4 @@ def index(request):
     if request.user:
         return redirect('subjects:subject-list')
     else:
-        return redirect('login')
+        return redirect('home')

@@ -9,6 +9,7 @@ class Subject(models.Model):
     name = models.CharField(max_length=250)
     students = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
+        through='users.Enrollment',
         related_name='students',
     )
     teacher = models.ForeignKey(
