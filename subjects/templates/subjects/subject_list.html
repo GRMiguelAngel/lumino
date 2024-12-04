@@ -7,10 +7,15 @@
   <a href="{% url "logout" %}" class='text-decoration-none'>logout</a>
 </div>
 <p>hola {{user}}, {{user.profile}}</p>
-<a href="{% url "user:enroll" %}">Matricularse</a>
+<p>
+  <a href="{% url "subjects:enroll" %}" class='text-decoration-none'>Matricularse</a>
+  <a href="{% url "subjects:unenroll" %}" class='text-decoration-none'>Desmatricularse</a>
+</p>
 
 {% for subject in subjects %}
-  {{subject.code}}
+  <a href="{% url "subjects:subject-detail" subject.code %}" class='text-decoration-none'>
+    {{subject.name}}({{subject.code}})
+  </a>
 {% endfor %}
 
 

@@ -7,7 +7,3 @@ from subjects.models import Subject
 # Create your views here.
 
 
-@login_required
-def enroll(request: HttpRequest) -> HttpResponse:
-    subjects = Subject.objects.all()
-    return render(request, 'users/subject_enrollment.html', dict(subjects=subjects))

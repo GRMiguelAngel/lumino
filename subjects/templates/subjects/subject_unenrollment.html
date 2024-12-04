@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Desmatricular{% endblock title %}
+
+{% block body %}
+<div class="text-center ">
+  <a href="{% url "logout" %}" class='text-decoration-none'>logout</a><br>
+  <a href="{% url "subjects:subject-list" %}">Volver a Subject-list</a>
+</div>
+<h1>Asignaturas</h1>
+{% crispy form %}
+{% endblock body %}

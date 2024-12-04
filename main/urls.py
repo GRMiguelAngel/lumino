@@ -26,7 +26,7 @@ import shared.views
 urlpatterns = [
     path('', shared.views.index, name='index'),
     path('admin/', admin.site.urls),
-    path('home/', shared.views.index),
+    path('home/', shared.views.index, name='home-page'),
     path('login/', accounts.views.user_login, name='login'),
     path('signup/', accounts.views.user_signup, name='signup'),
     path('logout/', accounts.views.user_logout, name='logout'),

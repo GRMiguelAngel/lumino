@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}{{subject.code}}{% endblock title %}
+
+{% block body %}
+<div class="text-center ">
+  <a href="{% url "logout" %}" class='text-decoration-none'>logout</a>
+  <a href="{% url "subjects:subject-detail" subject.code %}" class='text-decoration-none'>Añadir Tema</a>
+</div>
+<h1>{{subject.name}}</h1>
+
+{% endblock body %}

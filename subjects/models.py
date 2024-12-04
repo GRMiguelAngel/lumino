@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.urls import reverse
 
 # Create your models here.
 
@@ -9,14 +10,17 @@ class Subject(models.Model):
     name = models.CharField(max_length=250)
     students = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
-        through='users.Enrollment',
-        related_name='students',
+        through='subjects.Enrollment',
+        related_name='student_subjects',
     )
     teacher = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name='teacher',
+        related_name='teacher_subjects',
     )
+
+    def get_absolute_url(self):
+        return reverse('subject:subject-detail', kwargs={'code': self.code})
 
     def __str__(self):
         return self.code
@@ -31,3 +35,14 @@ class Lesson(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Enrollment(models.Model):
+    enrolled_at = models.DateField(auto_now_add=True)
+    mark = models.PositiveSmallIntegerField(null=True)
+    student = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='student'
+    )
+    subject = models.ForeignKey(
+        'subjects.Subject', related_name='subject', on_delete=models.CASCADE
+    )
