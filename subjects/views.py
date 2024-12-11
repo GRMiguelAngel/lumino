@@ -3,7 +3,7 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 
 from .forms import AddLessonForm, EnrollForm, UnenrollForm
-from .models import Subject
+from .models import Lesson, Subject
 
 # Create your views here.
 
@@ -43,17 +43,24 @@ def unenroll(request: HttpRequest) -> HttpResponse:
 @login_required
 def subject_detail(request: HttpRequest, subject_code: str) -> HttpResponse:
     subject = Subject.objects.get(code=subject_code)
-    return render(request, 'subjects/subject_detail.html', dict(subject=subject))
+    lessons = Lesson.objects.filter(subject=subject)
+    return render(request, 'subjects/subject_detail.html', dict(subject=subject, lessons=lessons))
 
 
 @login_required
-def add_lesson(request: HttpRequest) -> HttpResponse:
+def add_lesson(request: HttpRequest, subject_code: str) -> HttpResponse:
+    subject = Subject.objects.get(code=subject_code)
     if request.method == 'POST':
         if (form := AddLessonForm(request.POST)).is_valid():
-            lesson = form.save(commit=False)
-            lesson.user = request.user
-            lesson.save()
-            return redirect(lesson.subject)
+            form.save(subject)
+            return redirect('subjects:subject-detail', subject.code)
     else:
-        form = EnrollForm(request.user)
-    return render(request, '')
+        form = AddLessonForm()
+    return render(request, 'lessons/add_lesson.html', dict(form=form))
+
+
+@login_required
+def lesson_detail(request: HttpRequest, subject_code: str, lesson_pk: int) -> HttpResponse:
+    subject = Subject.objects.get(code=subject_code)
+    lesson = Lesson.objects.get(pk=lesson_pk)
+    return render(request, 'lessons/lesson_detail.html', dict(subject=subject, lesson=lesson))

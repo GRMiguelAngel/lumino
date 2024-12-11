@@ -2,10 +2,19 @@
 {% block title %}{{subject.code}}{% endblock title %}
 
 {% block body %}
-<div class="text-center ">
+<div class="text-end mt-2 me-3">
+  hola {{user}}, {{user.profile}}
   <a href="{% url "logout" %}" class='text-decoration-none'>logout</a>
-  <a href="{% url "subjects:subject-detail" subject.code %}" class='text-decoration-none'>Añadir Tema</a>
 </div>
-<h1>{{subject.name}}</h1>
+<div class="container">
+  <div class="text-center ">
+    <a href="{% url "subjects:subject-list" %}">Volver a Subject-list</a>
+  </div>
+  <h1 class="mb-5">{{subject.name}}</h1>
+  {% for lesson in lessons %}
+  <a href="{% url "subjects:lesson-detail" subject.code lesson.pk %}" class='text-decoration-none'>{{ lesson }}</a><br>
+  {% endfor %}
+  <a href="{% url "subjects:add-lesson" subject.code %}" class='text-decoration-none btn btn-primary mt-3'>Añadir Tema</a>
+</div>
 
 {% endblock body %}
