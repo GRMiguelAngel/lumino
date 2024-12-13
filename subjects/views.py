@@ -10,8 +10,19 @@ from .models import Lesson, Subject
 
 @login_required
 def subject_list(request: HttpRequest) -> HttpResponse:
-    subjects = Subject.objects.filter(students=request.user)
-    return render(request, 'subjects/subject_list.html', dict(subjects=subjects))
+    if request.user.profile.is_teacher():
+        teacher_subjects = Subject.objects.filter(teacher=request.user)
+        student_subjects = Subject.objects.filter(students=request.user)
+        return render(
+            request,
+            'subjects/subject_list.html',
+            dict(teacher_subjects=teacher_subjects, student_subjects=student_subjects),
+        )
+    else:
+        student_subjects = Subject.objects.filter(students=request.user)
+        return render(
+            request, 'subjects/subject_list.html', dict(student_subjects=student_subjects)
+        )
 
 
 @login_required

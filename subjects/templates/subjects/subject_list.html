@@ -9,17 +9,27 @@
   <a href="{% url "logout" %}" class='text-decoration-none'>logout</a>
 </div>
 <div class="container">
-  <h2 class="mt-3 mb-5">Asignaturas</h2>
-  {% for subject in subjects %}
-  <a href="{% url "subjects:subject-detail" subject.code %}" class='text-decoration-none'>
-    {{subject.name}}({{subject.code}})
-  </a><br>
-  {% endfor %}
+  {% if user.profile.is_student %}
+    <h2 class="mt-3 mb-5">Asignaturas</h2>
+    {% for subject in student_subjects %}
+      <a href="{% url "subjects:subject-detail" subject.code %}" class='text-decoration-none'>
+        {{subject.code}} {{subject.name}}
+      </a><br>
+      {% endfor %}
+  {% endif %}
+      <a href="{% url "subjects:enroll" %}" type='button' class='btn btn-primary text-decoration-none'>Matricularse</a>
+      <a href="{% url "subjects:unenroll" %}" class='btn btn-danger text-decoration-none'>Desmatricularse</a>
+
+  {% if user.profile.is_teacher %}
+  <h2 class="mt-3 mb-5">Docencia</h2>
+    {% for subject in teacher_subjects %}
+      <a href="{% url "subjects:subject-detail" subject.code %}" class='text-decoration-none'>
+        {{subject.code}} {{subject.name}}
+      </a><br>
+    {% endfor %}
+  {% endif %}
   <p class="mt-3">
-    <a href="{% url "subjects:enroll" %}" type='button' class='btn btn-primary text-decoration-none'>Matricularse</a>
-    <a href="{% url "subjects:unenroll" %}" class='btn btn-danger text-decoration-none'>Desmatricularse</a>
   </p>
 </div>
-
 
 {% endblock body %}

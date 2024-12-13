@@ -25,12 +25,11 @@ class Profile(models.Model):
 
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
-    # Una herramienta secreta que usaremos más tarde
-    # def is_teacher(self):
-    #     return self.role == Profile.Role.TEACHER
+    def is_teacher(self):
+        return self.role == Profile.Role.TEACHER
 
-    # def is_student(self):
-    #     return self.role == Profile.Role.STUDENT
+    def is_student(self):
+        return self.role == Profile.Role.STUDENT
 
     def __str__(self):
         return self.role
