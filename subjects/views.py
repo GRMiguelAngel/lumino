@@ -59,6 +59,13 @@ def subject_detail(request: HttpRequest, subject_code: str) -> HttpResponse:
 
 
 @login_required
+def lesson_detail(request: HttpRequest, subject_code: str, lesson_pk: int) -> HttpResponse:
+    subject = Subject.objects.get(code=subject_code)
+    lesson = Lesson.objects.get(pk=lesson_pk)
+    return render(request, 'lessons/lesson_detail.html', dict(subject=subject, lesson=lesson))
+
+
+@login_required
 def add_lesson(request: HttpRequest, subject_code: str) -> HttpResponse:
     subject = Subject.objects.get(code=subject_code)
     if request.method == 'POST':
@@ -69,9 +76,3 @@ def add_lesson(request: HttpRequest, subject_code: str) -> HttpResponse:
         form = AddLessonForm()
     return render(request, 'lessons/add_lesson.html', dict(form=form))
 
-
-@login_required
-def lesson_detail(request: HttpRequest, subject_code: str, lesson_pk: int) -> HttpResponse:
-    subject = Subject.objects.get(code=subject_code)
-    lesson = Lesson.objects.get(pk=lesson_pk)
-    return render(request, 'lessons/lesson_detail.html', dict(subject=subject, lesson=lesson))

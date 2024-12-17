@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{% endblock title %}
+{% block body %}
+<div class="text-end mt-2 me-3">
+  hola {{user}}, {{user.profile}}
+  <a href="{% url "logout" %}" class='text-decoration-none'>logout</a>
+</div>
+<div class="container">
+  <div class="text-center ">
+    <a href="{% url "subjects:subject-list" %}">Volver a Subject-list</a>
+  </div>
+  <h1>{{lesson}}</h1><br>
+  {{lesson.content}}
+</div>
+{% endblock body %}
