@@ -17,6 +17,7 @@
     {% endfor %}
     {% if user.profile.is_teacher %}
       <a href="{% url "subjects:add-lesson" subject.code %}" class='text-decoration-none btn btn-primary mt-3'>Añadir Tema</a>
+      <a href="{% url "subjects:edit-marks" subject.code %}" class='text-decoration-none btn btn-primary mt-3'>Editar Notas</a>
     {% endif %}
   </div>
 

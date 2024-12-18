@@ -3,6 +3,13 @@
 {% block title %}Lumino{% endblock title %}
 
 {% block body %}
-<a href="{% url "login" %}">Login</a>
-<a href="{% url "signup" %}">Sign up</a>
+<div class="container">
+  <div class="text-center">
+    <a href="{% url "login" %}">Login</a>
+    <a href="{% url "signup" %}">Sign up</a>
+    <p>
+      <strong>Bienvenido</strong>
+    </p>
+  </div>
+</div>
 {% endblock body %}

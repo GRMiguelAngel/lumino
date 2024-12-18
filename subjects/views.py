@@ -1,11 +1,23 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpRequest, HttpResponse
+from django.contrib.messages import constants as messages
+from django.forms import modelformset_factory
+from django.http import HttpRequest, HttpResponse, HttpResponseForbidden
 from django.shortcuts import redirect, render
+from django.urls import reverse
 
-from .forms import AddLessonForm, EnrollForm, UnenrollForm
-from .models import Lesson, Subject
+from .forms import (
+    AddLessonForm,
+    EditLessonForm,
+    EditMarksForm,
+    EditMarksFormSetHelper,
+    EnrollForm,
+    UnenrollForm,
+)
+from .models import Enrollment, Lesson, Subject
 
 # Create your views here.
+
+forbidden_msg = 'No tienes permiso para realizar esta acción.'
 
 
 @login_required
@@ -76,3 +88,51 @@ def add_lesson(request: HttpRequest, subject_code: str) -> HttpResponse:
         form = AddLessonForm()
     return render(request, 'lessons/add_lesson.html', dict(form=form))
 
+
+@login_required
+def edit_lesson(request: HttpRequest, subject_code: str, lesson_pk: int) -> HttpResponse:
+    lesson = Lesson.objects.get(pk=lesson_pk)
+    if request.method == 'POST':
+        if (form := EditLessonForm(request.POST, instance=lesson)).is_valid():
+            form.save()
+            return redirect('subjects:lesson-detail', subject_code, lesson_pk)
+    else:
+        form = EditLessonForm(instance=lesson)
+    return render(request, 'lessons/edit_lesson.html', dict(form=form))
+
+
+@login_required
+def delete_lesson(request: HttpRequest, subject_code: str, lesson_pk: int) -> HttpResponse:
+    lesson = Lesson.objects.get(pk=lesson_pk)
+    if request.user.profile.is_teacher and request.user == lesson.subject.teacher:
+        lesson.delete()
+        return redirect('subjects:subject-detail', subject_code)
+    else:
+        return HttpResponseForbidden(forbidden_msg)
+
+
+@login_required
+def edit_marks(request, subject_code: str):
+    subject = Subject.objects.get(code=subject_code)
+
+    # breadcrumbs = Breadcrumbs()
+    # breadcrumbs.add('My subjects', reverse('subjects:subject-list'))
+    # breadcrumbs.add(subject.code, reverse('subjects:subject-detail', args=[subject.code]))
+    # breadcrumbs.add('Marks', reverse('subjects:mark-list', args=[subject.code]))
+    # breadcrumbs.add('Edit marks')
+
+    MarkFormSet = modelformset_factory(Enrollment, EditMarksForm, extra=0)
+    queryset = subject.enrollment.all()
+    if request.method == 'POST':
+        if (formset := MarkFormSet(queryset=queryset, data=request.POST)).is_valid():
+            formset.save()
+            messages.add_message(request, messages.SUCCESS, 'Marks were successfully saved.')
+            return redirect(reverse('subjects:edit-marks', kwargs={'subject_code': subject_code}))
+    else:
+        formset = MarkFormSet(queryset=queryset)
+    helper = EditMarksFormSetHelper()
+    return render(
+        request,
+        'subjects/subject_marks.html',
+        dict(subject=subject, formset=formset, helper=helper),
+    )

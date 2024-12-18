@@ -39,6 +39,14 @@ STATICFILES_DIRS = [BASE_DIR / 'node_modules']
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+RQ_QUEUES = {
+    'default': {
+        'HOST': 'localhost',
+        'PORT': 6379,
+        'DB': 0,
+    },
+}
+
 # Application definition
 
 INSTALLED_APPS = [
