@@ -12,6 +12,7 @@
       <a href="{% url "subjects:subject-list" %}">Volver a Subject-list</a>
     </div>
     <h1 class="mb-5">{{subject.name}}</h1>
+    {{ user.enrollment.mark }}
     {% for lesson in lessons %}
       <a href="{% url "subjects:lesson-detail" subject.code lesson.pk %}" class='text-decoration-none'>{{ lesson }}</a><br>
     {% endfor %}

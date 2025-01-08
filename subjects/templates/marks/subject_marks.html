@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load subject_extras %}
+{% block title %}Editar Notas{% endblock title %}
+
+{% block body %}
+<div class="container">
+  <div align='center'>
+    <a href="{% url "logout" %}" class='text-decoration-none'>logout</a>
+  </div>
+  <div class="text-center ">
+    <a href="{% url "subjects:subject-list" %}">Volver a Subject-list</a>
+  </div>
+<div>
+<h1>Editar Notas</h1>
+{% crispy formset helper %}
+{% endblock body %}

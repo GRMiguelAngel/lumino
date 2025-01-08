@@ -9,14 +9,14 @@
 </div>
 <div class="container">
   <div class="text-center ">
-    <a href="{% url "subjects:subject-list" %}">Volver a Subject-list</a>
+    <a href="{% url "subjects:subject-list" %}" class='text-decoration-none'>Volver a Subject-list</a>
   </div>
-  <a href="{% url "subjects:subject-detail" subject %}">Volver atrás</a>
+  <a href="{% url "subjects:subject-detail" subject %}" class='text-decoration-none'>Volver atrás</a>
   <h1>{{lesson}}</h1><br>
   {{lesson.content}}
 </div>
 {% if user.profile.is_teacher %}
-  <a href="{% url "subjects:edit-lesson" subject.code lesson.pk %}">Editar lesson</a>
-  <a href="{% url "subjects:delete-lesson" subject.code lesson.pk %}">Eliminar lesson</a>
+  <a href="{% url "subjects:edit-lesson" subject.code lesson.pk %}" class='text-decoration-none'>Editar lesson</a><br>
+  <a href="{% url "subjects:delete-lesson" subject.code lesson.pk %}" class='text-decoration-none'>Eliminar lesson</a>
 {% endif %}
 {% endblock body %}

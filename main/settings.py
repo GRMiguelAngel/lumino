@@ -63,6 +63,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
     'django_browser_reload',
+    'sorl.thumbnail',
+    'django_rq',
 ]
 
 MIDDLEWARE = [
