@@ -33,6 +33,8 @@ urlpatterns = [
     path('logout/', accounts.views.user_logout, name='logout'),
     path('subjects/', include('subjects.urls')),
     path('user/', include('users.urls')),
-    path('users/', users.views.user_detail, name='user-detail'),
+    path('users/<str:username>', users.views.user_detail, name='user-detail'),
     path('__reload__/', include('django_browser_reload.urls')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] 
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

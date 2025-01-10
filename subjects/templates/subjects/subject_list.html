@@ -5,8 +5,9 @@
 {% block body %}
 
 <div class="text-end mt-2 me-3">
-  hola {{user}}, {{user.profile}}
-  <a href="{% url "logout" %}" class='text-decoration-none'>logout</a>
+  hola <a href="{% url "user-detail" user.username %}">{{user}}</a>
+  <a href="{% url "logout" %}" class='text-decoration-none'>logout</a><br>
+  <a href="{% url "user:user-leave" %}">Abandonar Lumino</a>
 </div>
 <div class="container">
   {% if user.profile.is_student %}

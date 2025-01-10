@@ -138,6 +138,6 @@ def edit_marks(request, subject_code: str):
     helper = EditMarksFormSetHelper()
     return render(
         request,
-        'marks/subject_marks.html',
+        'marks/edit_marks.html',
         dict(subject=subject, formset=formset, helper=helper),
     )

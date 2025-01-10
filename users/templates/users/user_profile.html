@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Profile{% endblock title %}
+{% block body %}
+<div class="text-center">
+  <a href="{% url "subjects:subject-list" %}">Volver a Subject-list</a>
+</div>
+
+<div class="container">
+  <img class="m-3" src="{{profile.avatar.url}}" height="200px">
+  {{profile}}
+  {{profile.user.username}},
+  {{profile.user.first_name}}
+  {{profile.user.last_name}}<br>
+  {{profile.user.email}}
+  <p>
+    {{profile.bio}}
+  </p>
+  <a href="{% url "user:edit-profile" %}">Editar perfil</a>
+
+</div>
+{% endblock body %}

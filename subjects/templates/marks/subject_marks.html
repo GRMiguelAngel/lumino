@@ -9,7 +9,9 @@
     <a href="{% url "logout" %}" class='text-decoration-none'>logout</a>
   </div>
   <div class="text-center ">
-    <a href="{% url "subjects:subject-list" %}">Volver a Subject-list</a>
+    <a href="{% url "subjects:subject-list" %}">Volver a Subject-list</a><br>
+<a href="{% url "subjects:subject-detail" subject %}" class='text-decoration-none'>Volver atrás</a>
+
   </div>
 <div>
 <h1>Editar Notas</h1>
