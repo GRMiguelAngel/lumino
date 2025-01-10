@@ -8,11 +8,17 @@
     <a href="{% url "logout" %}" class='text-decoration-none'>logout</a>
   </div>
   <div class="container">
+    {% if user.profile.is_student and enrollment.mark is not None %}
+      {% if enrollment.mark < 5 %}
+        <p class="text-danger">Calificación: {{ enrollment.mark }}</p>
+      {% else %}
+        <p class="text-success">Calificación: {{ enrollment.mark }}</p>
+      {% endif %}
+    {% endif %}
     <div class="text-center ">
-      <a href="{% url "subjects:subject-list" %}">Volver a Subject-list</a>
+      <a href="{% url "subjects:subject-list" %}" class='text-decoration-none'>Volver a Subject-list</a><br>
     </div>
     <h1 class="mb-5">{{subject.name}}</h1>
-    {{ user.enrollment.mark }}
     {% for lesson in lessons %}
       <a href="{% url "subjects:lesson-detail" subject.code lesson.pk %}" class='text-decoration-none'>{{ lesson }}</a><br>
     {% endfor %}

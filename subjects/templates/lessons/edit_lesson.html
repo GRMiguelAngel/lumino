@@ -5,4 +5,5 @@
 
 {% block body %}
 {% crispy form %}
+<a href="{% url "subjects:lesson-detail" subject lesson.pk %}" role="button" class='btn btn-danger'>Cancelar</a>
 {% endblock body %}

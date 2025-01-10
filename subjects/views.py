@@ -67,6 +67,10 @@ def unenroll(request: HttpRequest) -> HttpResponse:
 def subject_detail(request: HttpRequest, subject_code: str) -> HttpResponse:
     subject = Subject.objects.get(code=subject_code)
     lessons = Lesson.objects.filter(subject=subject)
+    if request.user.profile.is_student():
+        enrollment = Enrollment.objects.get(student=request.user)
+        return render(request, 'subjects/subject_detail.html', dict(subject=subject, lessons=lessons, enrollment=enrollment))
+
     return render(request, 'subjects/subject_detail.html', dict(subject=subject, lessons=lessons))
 
 
@@ -92,19 +96,20 @@ def add_lesson(request: HttpRequest, subject_code: str) -> HttpResponse:
 @login_required
 def edit_lesson(request: HttpRequest, subject_code: str, lesson_pk: int) -> HttpResponse:
     lesson = Lesson.objects.get(pk=lesson_pk)
+    subject = Subject.objects.get(code=subject_code)
     if request.method == 'POST':
         if (form := EditLessonForm(request.POST, instance=lesson)).is_valid():
             form.save()
             return redirect('subjects:lesson-detail', subject_code, lesson_pk)
     else:
         form = EditLessonForm(instance=lesson)
-    return render(request, 'lessons/edit_lesson.html', dict(form=form))
+    return render(request, 'lessons/edit_lesson.html', dict(form=form, subject=subject, lesson=lesson))
 
 
 @login_required
 def delete_lesson(request: HttpRequest, subject_code: str, lesson_pk: int) -> HttpResponse:
     lesson = Lesson.objects.get(pk=lesson_pk)
-    if request.user.profile.is_teacher and request.user == lesson.subject.teacher:
+    if request.user.profile.is_teacher() and request.user == lesson.subject.teacher:
         lesson.delete()
         return redirect('subjects:subject-detail', subject_code)
     else:

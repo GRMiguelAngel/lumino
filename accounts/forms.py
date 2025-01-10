@@ -57,5 +57,4 @@ class SignupForm(forms.ModelForm):
         user = super().save(commit=False)
         user.set_password(self.cleaned_data['password'])
         user = super().save(*args, **kwargs)
-        Profile.objects.create(user=user)
         return user
