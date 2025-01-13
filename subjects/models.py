@@ -30,7 +30,7 @@ class Lesson(models.Model):
     title = models.CharField(max_length=250)
     content = models.TextField(blank=True)
     subject = models.ForeignKey(
-        'subjects.Subject', related_name='subject_lesson', on_delete=models.CASCADE
+        'subjects.Subject', related_name='lessons', on_delete=models.CASCADE
     )
 
     def __str__(self):
@@ -41,7 +41,7 @@ class Enrollment(models.Model):
     enrolled_at = models.DateField(auto_now_add=True)
     mark = models.PositiveSmallIntegerField(null=True)
     student = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='student_enrollment'
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='enrolled'
     )
     subject = models.ForeignKey(
         'subjects.Subject', related_name='enrollment', on_delete=models.CASCADE

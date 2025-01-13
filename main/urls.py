@@ -27,13 +27,12 @@ import users.views
 urlpatterns = [
     path('', shared.views.index, name='index'),
     path('admin/', admin.site.urls),
-    path('home/', shared.views.home, name='home'),
     path('login/', accounts.views.user_login, name='login'),
     path('signup/', accounts.views.user_signup, name='signup'),
     path('logout/', accounts.views.user_logout, name='logout'),
     path('subjects/', include('subjects.urls')),
     path('user/', include('users.urls')),
-    path('users/<str:username>', users.views.user_detail, name='user-detail'),
+    path('users/<str:username>/', users.views.user_detail, name='user-detail'),
     path('__reload__/', include('django_browser_reload.urls')),
 ] 
 if settings.DEBUG:

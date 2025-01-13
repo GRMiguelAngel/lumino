@@ -10,9 +10,9 @@
   <div class="container">
     {% if user.profile.is_student and enrollment.mark is not None %}
       {% if enrollment.mark < 5 %}
-        <p class="text-danger">Calificación: {{ enrollment.mark }}</p>
+        <p class="text-danger">Your mark for this subject: {{ enrollment.mark }}</p>
       {% else %}
-        <p class="text-success">Calificación: {{ enrollment.mark }}</p>
+        <p class="text-success">Your mark for this subject: {{ enrollment.mark }}</p>
       {% endif %}
     {% endif %}
     <div class="text-center ">
@@ -20,10 +20,16 @@
     </div>
     <h1 class="mb-5">{{subject.name}}</h1>
     {% for lesson in lessons %}
-      <a href="{% url "subjects:lesson-detail" subject.code lesson.pk %}" class='text-decoration-none'>{{ lesson }}</a><br>
+      <a href="{% url "subjects:lesson-detail" subject.code lesson.pk %}" class='text-decoration-none'>{{ lesson }}</a>
+      {% if user.profile.is_teacher %}
+      <a href="{% url "subjects:edit-lesson" subject.code lesson.pk %}" class='text-decoration-none'>Editar lesson</a>
+      <a href="{% url "subjects:delete-lesson" subject.code lesson.pk %}" class='text-decoration-none'>Eliminar lesson</a>
+      {% endif %}
+      <br>
     {% endfor %}
     {% if user.profile.is_teacher %}
       <a href="{% url "subjects:add-lesson" subject.code %}" class='text-decoration-none btn btn-primary mt-3'>Añadir Tema</a>
+      <a href="{% url "subjects:marks-list" subject.code %}" class='text-decoration-none btn btn-primary mt-3'>Ver Notas</a>
       <a href="{% url "subjects:edit-marks" subject.code %}" class='text-decoration-none btn btn-primary mt-3'>Editar Notas</a>
     {% endif %}
   </div>

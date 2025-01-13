@@ -1,5 +1,6 @@
 # Create your views here.
 from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
@@ -34,7 +35,7 @@ def user_signup(request):
             user = form.save()
 
             login(request, user)
-
+            messages.success(request, 'Welcome to Lumino. Nice to see you!')
             return redirect('subjects:subject-list')
     else:
         form = SignupForm()

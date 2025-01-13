@@ -7,7 +7,6 @@
 <div class="text-end mt-2 me-3">
   hola <a href="{% url "user-detail" user.username %}">{{user}}</a>
   <a href="{% url "logout" %}" class='text-decoration-none'>logout</a><br>
-  <a href="{% url "user:user-leave" %}">Abandonar Lumino</a>
 </div>
 <div class="container">
   {% if user.profile.is_student %}
@@ -17,9 +16,9 @@
         {{subject.code}} {{subject.name}}
       </a><br>
       {% endfor %}
-  {% endif %}
       <a href="{% url "subjects:enroll" %}" type='button' class='btn btn-primary text-decoration-none'>Matricularse</a>
       <a href="{% url "subjects:unenroll" %}" class='btn btn-danger text-decoration-none'>Desmatricularse</a>
+  {% endif %}
 
   {% if user.profile.is_teacher %}
   <h2 class="mt-3 mb-5">Docencia</h2>

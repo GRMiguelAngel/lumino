@@ -15,7 +15,11 @@
   <p>
     {{profile.bio}}
   </p>
-  <a href="{% url "user:edit-profile" %}">Editar perfil</a>
-
+  {% if user == profile.user %}
+    <a href="{% url "user:edit-profile" %}">Editar perfil</a>
+    {% if user.profile.is_student %}
+      <a href="{% url "user:user-leave" %}">Abandonar Lumino</a>
+    {% endif %}
+  {% endif %}
 </div>
 {% endblock body %}
