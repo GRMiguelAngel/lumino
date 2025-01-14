@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load subject_extras %}
+{% block title %}Notas{% endblock title %}
+
+{% block body %}
+<div class="container">
+  <div align='center'>
+    <a href="{% url "logout" %}" class='text-decoration-none'>logout</a>
+  </div>
+  <div class="text-center ">
+    <a href="{% url "subjects:subject-list" %}">Volver a Subject-list</a><br>
+<a href="{% url "subjects:subject-detail" subject %}" class='text-decoration-none'>Volver atrás</a>
+
+  </div>
+<div>
+<h1>Notas</h1>
+{% for enrollment in enrollments %}
+<a href="{% url "user-detail" enrollment.student %}">{{enrollment.student.username}}</a> Calificación: {{enrollment.mark}}
+<br>
+{% endfor %}
+<a href="{% url "subjects:edit-marks" subject.code %}" class='text-decoration-none btn btn-primary mt-3'>Editar Notas</a>
+{% endblock body %}

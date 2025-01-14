@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.urls import reverse
 
@@ -39,7 +40,7 @@ class Lesson(models.Model):
 
 class Enrollment(models.Model):
     enrolled_at = models.DateField(auto_now_add=True)
-    mark = models.PositiveSmallIntegerField(null=True)
+    mark = models.PositiveSmallIntegerField(null=True, validators=[MaxValueValidator(10), MinValueValidator(1)])
     student = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='enrolled'
     )

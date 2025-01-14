@@ -14,21 +14,9 @@ from .forms import (
     UnenrollForm,
 )
 from .models import Enrollment, Lesson, Subject
+from .utils import student_enrolled, non_teaching_teacher
 
 # Create your views here.
-
-forbidden_msg = 'No tienes permiso para realizar esta acción.'
-
-
-# def is_enrolled(func):
-#     def wrapper(*args, **kwargs):
-#         enrolled_subjects = args[0].user.enrolled
-#         subject = Subject.objects.get()
-#         if user not in subject.students:
-#             return HttpResponseForbidden(forbidden_msg)
-#         return func(*args, **kwargs)
-
-#     return wrapper
 
 
 @login_required
@@ -51,7 +39,7 @@ def subject_list(request: HttpRequest) -> HttpResponse:
 @login_required
 def enroll(request: HttpRequest) -> HttpResponse:
     if request.user.profile.is_teacher():
-        return HttpResponseForbidden(forbidden_msg)
+        return HttpResponseForbidden()
     if request.method == 'POST':
         if (form := EnrollForm(request.user, data=request.POST)).is_valid():
             subjects = form.cleaned_data['subjects']
@@ -67,7 +55,7 @@ def enroll(request: HttpRequest) -> HttpResponse:
 @login_required
 def unenroll(request: HttpRequest) -> HttpResponse:
     if request.user.profile.is_teacher():
-        return HttpResponseForbidden(forbidden_msg)
+        return HttpResponseForbidden()
     if request.method == 'POST':
         if (form := UnenrollForm(request.user, data=request.POST)).is_valid():
             subjects = form.cleaned_data['subjects']
@@ -81,8 +69,9 @@ def unenroll(request: HttpRequest) -> HttpResponse:
     return render(request, 'subjects/subject_enrollment.html', dict(form=form))
 
 
-# @is_enrolled
 @login_required
+@student_enrolled
+@non_teaching_teacher
 def subject_detail(request: HttpRequest, subject_code: str) -> HttpResponse:
     subject = Subject.objects.get(code=subject_code)
     lessons = Lesson.objects.filter(subject=subject)
@@ -98,6 +87,8 @@ def subject_detail(request: HttpRequest, subject_code: str) -> HttpResponse:
 
 
 @login_required
+@student_enrolled
+@non_teaching_teacher
 def lesson_detail(request: HttpRequest, subject_code: str, lesson_pk: int) -> HttpResponse:
     subject = Subject.objects.get(code=subject_code)
     lesson = Lesson.objects.get(pk=lesson_pk)
@@ -105,9 +96,10 @@ def lesson_detail(request: HttpRequest, subject_code: str, lesson_pk: int) -> Ht
 
 
 @login_required
+@non_teaching_teacher
 def add_lesson(request: HttpRequest, subject_code: str) -> HttpResponse:
     if request.user.profile.is_student():
-        return HttpResponseForbidden(forbidden_msg)
+        return HttpResponseForbidden()
     subject = Subject.objects.get(code=subject_code)
     if request.method == 'POST':
         if (form := AddLessonForm(request.POST)).is_valid():
@@ -120,16 +112,17 @@ def add_lesson(request: HttpRequest, subject_code: str) -> HttpResponse:
 
 
 @login_required
+@non_teaching_teacher
 def edit_lesson(request: HttpRequest, subject_code: str, lesson_pk: int) -> HttpResponse:
     if request.user.profile.is_student():
-        return HttpResponseForbidden(forbidden_msg)
+        return HttpResponseForbidden()
     lesson = Lesson.objects.get(pk=lesson_pk)
     subject = Subject.objects.get(code=subject_code)
     if request.method == 'POST':
         if (form := EditLessonForm(request.POST, instance=lesson)).is_valid():
             form.save()
             messages.success(request, 'Changes were successfully saved.')
-            return redirect('subjects:lesson-detail', subject_code, lesson_pk)
+            return render(request, 'lessons/lesson_detail.html', dict(subject_code=subject_code, lesson_pk=lesson_pk))
     else:
         form = EditLessonForm(instance=lesson)
     return render(
@@ -138,38 +131,35 @@ def edit_lesson(request: HttpRequest, subject_code: str, lesson_pk: int) -> Http
 
 
 @login_required
+@non_teaching_teacher
 def delete_lesson(request: HttpRequest, subject_code: str, lesson_pk: int) -> HttpResponse:
     if request.user.profile.is_student():
-        return HttpResponseForbidden(forbidden_msg)
+        return HttpResponseForbidden()
     lesson = Lesson.objects.get(pk=lesson_pk)
     if request.user.profile.is_teacher() and request.user == lesson.subject.teacher:
         lesson.delete()
         messages.success(request, 'Lesson was successfully deleted.')
         return redirect('subjects:subject-detail', subject_code)
     else:
-        return HttpResponseForbidden(forbidden_msg)
+        return HttpResponseForbidden()
 
 
 @login_required
+@non_teaching_teacher
 def marks_list(request: HttpRequest, subject_code: str) -> HttpResponse:
     if request.user.profile.is_student():
-        return HttpResponseForbidden(forbidden_msg)
+        return HttpResponseForbidden()
     subject = Subject.objects.get(code=subject_code)
     enrollments = subject.enrollment.all()
     return render(request, 'marks/marks_list.html', dict(enrollments=enrollments, subject=subject))
 
 
 @login_required
+@non_teaching_teacher
 def edit_marks(request, subject_code: str):
     if request.user.profile.is_student():
-        return HttpResponseForbidden(forbidden_msg)
+        return HttpResponseForbidden()
     subject = Subject.objects.get(code=subject_code)
-
-    # breadcrumbs = Breadcrumbs()
-    # breadcrumbs.add('My subjects', reverse('subjects:subject-list'))
-    # breadcrumbs.add(subject.code, reverse('subjects:subject-detail', args=[subject.code]))
-    # breadcrumbs.add('Marks', reverse('subjects:mark-list', args=[subject.code]))
-    # breadcrumbs.add('Edit marks')
 
     MarkFormSet = modelformset_factory(Enrollment, EditMarksForm, extra=0)
     queryset = subject.enrollment.all()

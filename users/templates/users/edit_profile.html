@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Edit Profile{% endblock title %}
+
+{% block body %}
+<div class="container">
+  {% crispy form %}
+  <a href="{% url "user-detail" user.username %}" type="button" class="btn btn-danger mt-2">Cancelar</a>
+</div>
+{% endblock body %}
