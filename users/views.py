@@ -14,9 +14,9 @@ forbidden_msg = 'No tienes permiso para realizar esta acción.'
 
 @login_required
 def user_detail(request: HttpRequest, username: str) -> HttpResponse:
-    user = User.objects.get(username=username)
-    profile = Profile.objects.get(user=user)
-    return render(request, 'users/user_profile.html', dict(profile=profile))
+    profile_user = User.objects.get(username=username)
+    # profile = Profile.objects.get(user=user)
+    return render(request, 'users/user_profile.html', dict(profile_user=profile_user))
 
 
 @login_required

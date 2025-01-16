@@ -32,4 +32,4 @@ class Profile(models.Model):
         return self.role == Profile.Role.STUDENT
 
     def __str__(self):
-        return self.role
+        return self.get_role_display()

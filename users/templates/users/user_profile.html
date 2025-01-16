@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load thumbnail %}
 {% block title %}Profile{% endblock title %}
 {% block body %}
 <div class="text-center">
@@ -6,16 +7,16 @@
 </div>
 
 <div class="container">
-  <img class="m-3" src="{{profile.avatar.url}}" height="200px">
-  {{profile}}
-  {{profile.user.username}},
-  {{profile.user.first_name}}
-  {{profile.user.last_name}}<br>
-  {{profile.user.email}}
+  {% thumbnail user.profile.avatar "200x200" crop="center" format="PNG" as avatar %}
+  <img src="{{ avatar.url }}" alt="Avatar">
+{% endthumbnail %}
+  {{profile_user.profile}} {{profile_user.username}},
+  <div>{{profile_user.first_name}} {{profile_user.last_name}}</div><br>
+  {{profile_user.email}}
   <p>
-    {{profile.bio}}
+    {{profile_user.profile.bio}}
   </p>
-  {% if user == profile.user %}
+  {% if user == profile_user %}
     <a href="{% url "user:edit-profile" %}">Editar perfil</a>
     {% if user.profile.is_student %}
       <a href="{% url "user:user-leave" %}">Abandonar Lumino</a>

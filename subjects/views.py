@@ -122,7 +122,7 @@ def edit_lesson(request: HttpRequest, subject_code: str, lesson_pk: int) -> Http
         if (form := EditLessonForm(request.POST, instance=lesson)).is_valid():
             form.save()
             messages.success(request, 'Changes were successfully saved.')
-            return render(request, 'lessons/lesson_detail.html', dict(subject_code=subject_code, lesson_pk=lesson_pk))
+            return render(request, 'lessons/lesson_detail.html', dict(subject=subject, lesson=lesson))
     else:
         form = EditLessonForm(instance=lesson)
     return render(
