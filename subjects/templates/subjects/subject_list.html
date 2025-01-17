@@ -11,6 +11,8 @@
 <div class="container">
   {% if user.profile.is_student %}
     <h2 class="mt-3 mb-5">Asignaturas</h2>
+    <a href="{% url "subjects:request-certificate" %}" class='text-decoration-none'>Pedir certificado de notas</a>
+    <br>
     {% for subject in student_subjects %}
       <a href="{% url "subjects:subject-detail" subject.code %}" class='text-decoration-none'>
         {{subject.code}} {{subject.name}}

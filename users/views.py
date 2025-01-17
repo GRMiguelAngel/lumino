@@ -5,7 +5,6 @@ from django.http import HttpRequest, HttpResponse, HttpResponseForbidden
 from django.shortcuts import redirect, render
 
 from .forms import EditProfileForm
-from .models import Profile
 
 # Create your views here.
 
@@ -15,7 +14,6 @@ forbidden_msg = 'No tienes permiso para realizar esta acción.'
 @login_required
 def user_detail(request: HttpRequest, username: str) -> HttpResponse:
     profile_user = User.objects.get(username=username)
-    # profile = Profile.objects.get(user=user)
     return render(request, 'users/user_profile.html', dict(profile_user=profile_user))
 
 

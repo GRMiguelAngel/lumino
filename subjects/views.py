@@ -14,7 +14,8 @@ from .forms import (
     UnenrollForm,
 )
 from .models import Enrollment, Lesson, Subject
-from .utils import student_enrolled, non_teaching_teacher
+from .tasks import deliver_certificate
+from .utils import non_teaching_teacher, student_enrolled
 
 # Create your views here.
 
@@ -122,7 +123,9 @@ def edit_lesson(request: HttpRequest, subject_code: str, lesson_pk: int) -> Http
         if (form := EditLessonForm(request.POST, instance=lesson)).is_valid():
             form.save()
             messages.success(request, 'Changes were successfully saved.')
-            return render(request, 'lessons/lesson_detail.html', dict(subject=subject, lesson=lesson))
+            return render(
+                request, 'lessons/lesson_detail.html', dict(subject=subject, lesson=lesson)
+            )
     else:
         form = EditLessonForm(instance=lesson)
     return render(
@@ -176,3 +179,8 @@ def edit_marks(request, subject_code: str):
         'marks/edit_marks.html',
         dict(subject=subject, formset=formset, helper=helper),
     )
+
+
+def request_certificate(request: HttpRequest) -> HttpResponse:
+    deliver_certificate.delay()
+    return render(request, 'subjects/certificate_confirmation.html')

@@ -39,6 +39,12 @@ STATICFILES_DIRS = [BASE_DIR / 'node_modules']
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+EMAIL_HOST = 'email-host'
+EMAIL_PORT = 'email-port'
+EMAIL_HOST_USER = 'email-host-user'
+EMAIL_HOST_PASSWORD = 'email-host-password'
+DEFAULT_FROM_EMAIL = 'default-from-email'
+
 RQ_QUEUES = {
     'default': {
         'HOST': 'localhost',
